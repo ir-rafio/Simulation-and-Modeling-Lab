@@ -11,7 +11,7 @@ int main()
     Simulator s(20, 40);
 
     std::ofstream res("result.csv");
-    res << "Order Threshold" << ',' << "Inventory Capacity" << ',' << "Average Ordering Cost" << ',' << "Average Holding Cost" << ',' << "Average Shortage Cost" << ',' << "Average Cost" << '\n';
+    res << "Policy" << ',' << "Order Threshold" << ',' << "Inventory Capacity" << ',' << "Average Ordering Cost" << ',' << "Average Holding Cost" << ',' << "Average Shortage Cost" << ',' << "Average Cost" << '\n';
 
     for(i=0; i<n; i++)
     {
@@ -31,7 +31,7 @@ int main()
             cost+=s.avgCost();
         }
 
-        res << threshold[i] << ',' << cap[i] << ',' << orderingCost/m << ',' << holdingCost/m << ',' << shortageCost/m << ',' << cost/m << '\n';
+        res << i+1 << ',' << threshold[i] << ',' << cap[i] << ',' << orderingCost/m << ',' << holdingCost/m << ',' << shortageCost/m << ',' << cost/m << '\n';
     }
 
     return 0;

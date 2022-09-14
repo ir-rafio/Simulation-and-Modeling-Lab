@@ -10,7 +10,7 @@ int main()
     Simulator s(arvMean, srvMin, srvMax, crewMin, crewMax, crewDelayMin, crewDelayMax);
 
     std::ofstream res("result.csv");
-	res << "Max Delay" << ',' << "Average Delay" << ',' << "Max Queue Length" << ',' << "Average Queue Length" << ',' << "Busy Ratio" << ',' << "Idle Ratio" << ',' << "Hogout Ratio" << '\n';
+	res << "Max Delay" << ',' << "Average Delay" << ',' << "Max Queue Length" << ',' << "Average Queue Length" << ',' << "Busy Ratio" << ',' << "Idle Ratio" << ',' << "Hogged out Ratio" << '\n';
 
     double maxDelay=0, avgDelay=0, maxQ=0, avgQ=0, util=0, hog=0;
 	for(j=0; j<m; j++)
@@ -26,7 +26,7 @@ int main()
         hog+=s.hogoutRatio();
     }
 
-    res << maxDelay/m << ',' << avgDelay/m << ',' << maxQ/m << ',' << avgQ/m << ',' << util/m << ',' << 1-util/m << ',' << hog/m << ',' << '\n';
+    res << maxDelay/m << ',' << avgDelay/m << ',' << maxQ/m << ',' << avgQ/m << ',' << util/m << ',' << 1-util/m << ',' << hog/m << '\n';
 
     return 0;
 }

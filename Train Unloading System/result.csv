@@ -1,2 +1,2 @@
-Max Delay,Average Delay,Max Queue Length,Average Queue Length,Busy Ratio,Idle Ratio,Hogout Ratio
-18.5791,5.91063,2.96667,0.387054,0.393138,0.606862,0.18047,
+Max Delay,Average Delay,Max Queue Length,Average Queue Length,Busy Ratio,Idle Ratio,Hogged out Ratio
+18.5791,5.91063,2.96667,0.387054,0.393138,0.606862,0.18047
