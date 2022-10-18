@@ -2,14 +2,15 @@
 #define EVENT_HPP
 
 class Simulator;
+class Server;
 
 class Event
 {
 protected:
     /*Basic Members*/
     double time;
-    Simulator *simulator;
     friend class Simulator;
+    friend class Server;
 
     /*Setter Functions*/
     void setTime(double _time);
@@ -19,7 +20,7 @@ protected:
 
 public:
     /*Constructor and Destructor*/
-    Event(Simulator*);
+    Event();
 
     /*Comparator*/
     static bool earlier(Event* e1, Event* e2);
@@ -27,6 +28,8 @@ public:
 
 class Arrival: public Event
 {
+protected:
+    Simulator *simulator;
 public:
     Arrival(Simulator*);
     void handle();
@@ -34,8 +37,10 @@ public:
 
 class Departure: public Event
 {
+protected:
+    Server *server;
 public:
-    Departure(Simulator*);
+    Departure(Server*);
     void handle();
 };
 

@@ -51,6 +51,7 @@ void Server::departureHandler()
 {
     double now=simulator->now();
     qArea+=queue.size()*(now-lastEventTime);
+    qMax=std::max(qMax, (int) queue.size());
     lastEventTime=now;
     maxDelay=std::max(maxDelay, now-lastArrivalTime);
     totalDelay+=now-lastArrivalTime;

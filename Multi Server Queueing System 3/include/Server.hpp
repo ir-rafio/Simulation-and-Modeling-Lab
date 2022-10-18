@@ -36,6 +36,7 @@ public:
     /*Getter Functions*/
     int getArrivalCount();
     int getQMax();
+    int getQSize();
     double getQArea();
     double getMaxDelay();
     double getTotalDelay();

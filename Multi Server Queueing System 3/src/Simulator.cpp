@@ -2,22 +2,25 @@
 
 Simulator::Simulator(double arrivalMean, double serviceMean): eventList(Heap<Event*>(Event::earlier))
 {
-    server=nullptr;
+    int i;
+    for(i=0; i<3; i++) server[i]=nullptr;
     reset(arrivalMean, serviceMean);
 }
 
 Simulator::~Simulator()
 {
+    int i;
     while(!eventList.isEmpty()) delete (eventList.pop());
-    if(server) delete server;
+    for(i=0; i<3; i++) if(server[i]) delete server[i];
 }
 
 void Simulator::reset(double arrivalMean, double serviceMean)
 {
+    int i;
     while(!eventList.isEmpty()) delete eventList.pop();
-    if(server) delete server;
+    for(i=0; i<3; i++) if(server[i]) delete server[i];
     
-    server=new Server(this, arrivalMean, serviceMean);
+    for(i=0; i<3; i++) server[i]=new Server(this, arrivalMean, serviceMean);
     clock=0;
 
     schedule(new Arrival(this), RandomNumber::exponential(arrivalMean));
@@ -42,11 +45,50 @@ void Simulator::schedule(Event *event, double interval)
     eventList.push(event);
 }
 
-Server* Simulator::getServer() { return server; }
+Server* Simulator::getServer()
+{
+    int i, j, m=INT_MAX, temp;
+
+    for(i=0; i<3; i++) 
+    {
+        temp=server[i]->getQSize();
+
+        if(temp<m)
+        {
+            j=i;
+            m=temp;
+        }
+    }
+
+    return server[j];
+}
+
 double Simulator::now() { return clock; }
 
-double Simulator::maxDelay() {return server->getMaxDelay(); }
-double Simulator::avgDelay() {return server->getTotalDelay()/server->getArrivalCount(); }
-int Simulator::maxQLength() { return server->getQMax(); }
-double Simulator::avgQLength() { return server->getQArea()/clock; }
-double Simulator::utilizationRatio() { return server->getUtilTime()/clock; }
+double Simulator::maxDelay()
+{
+    return std::max(server[0]->getMaxDelay(), std::max(server[1]->getMaxDelay(), server[2]->getMaxDelay()));
+}
+
+double Simulator::avgDelay()
+{
+    return (server[0]->getTotalDelay()+server[1]->getTotalDelay()+server[2]->getTotalDelay())/
+    (server[0]->getArrivalCount()+server[1]->getArrivalCount()+server[2]->getArrivalCount());
+}
+
+int Simulator::maxQLength()
+{
+    // std::cout << server[0]->getQMax() << ' ' << server[1]->getQMax() << ' ' << server[2]->getQMax() << '\n';
+    // std::cout << '\t' << server[0]->getQArea() << ' ' << server[1]->getQArea() << ' ' << server[2]->getQArea() << '\n';
+    return std::max(server[0]->getQMax(), std::max(server[1]->getQMax(), server[2]->getQMax()));
+}
+
+double Simulator::avgQLength()
+{
+    return (server[0]->getQArea()+server[1]->getQArea()+server[2]->getQArea())/(clock*3);
+}
+
+double Simulator::utilizationRatio()
+{
+    return (server[0]->getUtilTime()+server[1]->getUtilTime()+server[2]->getUtilTime())/(clock*3);
+}

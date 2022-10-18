@@ -10,7 +10,7 @@ class Simulator
 {
 protected:
     /*System*/
-    Server* server;
+    Server* server[3];
 
     /*Basic Members*/
     double clock;

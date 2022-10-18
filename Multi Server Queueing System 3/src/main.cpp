@@ -15,7 +15,7 @@ int main()
 
 	for(i=1; i<n; i++)
 	{
-	    srvMean=arvMean*i/n;
+	    srvMean=arvMean*i*3/n;
 	    maxDelay=0;
         avgDelay=0;
         maxQ=0;
@@ -36,8 +36,9 @@ int main()
             runtime+=s.now();
         }
 
-        res << arvMean << ',' << srvMean << ',' << srvMean/arvMean << ',' << maxDelay/m << ',' << avgDelay/m << ',' << maxQ/m << ',' << avgQ/m << ',' << util/m << ',' << 1-util/m << ',' << runtime/m << '\n';
+        res << arvMean << ',' << srvMean << ',' << srvMean/arvMean/3 << ',' << maxDelay/m << ',' << avgDelay/m << ',' << maxQ/m << ',' << avgQ/m << ',' << util/m << ',' << 1-util/m << ',' << runtime/m << '\n';
 	}
 
+    // getchar();
     return 0;
 }

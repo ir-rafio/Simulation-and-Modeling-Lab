@@ -10,11 +10,18 @@ class Simulator
 {
 protected:
     /*System*/
-    Server* server;
+    Server* server[3];
+    Queue<Job> queue;
+    friend class Server;
 
     /*Basic Members*/
     double clock;
     Heap<Event*> eventList;
+
+    /*Statistical Variables*/
+    int arrivalCount, qMax;
+    double qArea;
+    double maxDelay, totalDelay;
 
 public:
     /*Constructor and Destructor*/
@@ -31,8 +38,8 @@ public:
     Server* getServer();
 
     /*Output Functions*/
-    double maxDelay();
     double avgDelay();
+    double getMaxDelay();
     int maxQLength();
     double avgQLength();
     double utilizationRatio();

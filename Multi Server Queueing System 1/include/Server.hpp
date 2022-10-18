@@ -19,12 +19,11 @@ protected:
     
     /*State Variables*/
     bool status;
-    Queue<Job> queue, served;
+    Queue<Job>* queue;
+    Queue<Job> served;
 
     /*Statistical Variables*/
-    int arrivalCount, qMax;
-    double qArea;
-    double lastEventTime, lastArrivalTime, lastUtilTime, maxDelay, totalDelay, totalUtilization;
+    double lastEventTime, lastArrivalTime, lastUtilTime, totalUtilization;
 
     /*Utility Functions*/
     void serve(Job);
@@ -34,13 +33,9 @@ public:
     Server(Simulator*, double, double);
 
     /*Getter Functions*/
-    int getArrivalCount();
-    int getQMax();
-    double getQArea();
-    double getMaxDelay();
-    double getTotalDelay();
-    double getUtilTime();
     Queue<Job>* jobsDone();
+    double getUtilTime();
+    bool free();
     
     /*Event Handlers*/
     void arrivalHandler();

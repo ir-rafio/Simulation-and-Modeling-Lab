@@ -17,6 +17,7 @@ Server::Server(Simulator* s, double _arrivalMean, double _serviceMean): arrivalM
 
 int Server::getArrivalCount() { return arrivalCount; }
 int Server::getQMax() { return qMax; }
+int Server::getQSize() { return queue.size(); }
 double Server::getQArea() { return qArea; }
 double Server::getMaxDelay() { return maxDelay; }
 double Server::getTotalDelay() { return totalDelay; }
@@ -28,6 +29,7 @@ void Server::arrivalHandler()
     double now=simulator->now();
     qArea+=queue.size()*(now-lastEventTime);
     qMax=std::max(qMax, (int) queue.size());
+        // std::cout << queue.size() << ' ' << qMax << ' ' << qArea << '\n';
     lastEventTime=now;
     arrivalCount++;
     lastArrivalTime=now;
@@ -51,6 +53,8 @@ void Server::departureHandler()
 {
     double now=simulator->now();
     qArea+=queue.size()*(now-lastEventTime);
+    qMax=std::max(qMax, (int) queue.size());
+        // std::cout << queue.size() << ' ' << qMax << ' ' << qArea << '\n';
     lastEventTime=now;
     maxDelay=std::max(maxDelay, now-lastArrivalTime);
     totalDelay+=now-lastArrivalTime;
@@ -76,6 +80,6 @@ void Server::serve(Job job)
     job.departureTime=now+serviceTime;
     served.enqueue(job);
 
-    simulator->schedule(new Departure(simulator), serviceTime);
+    simulator->schedule(new Departure(this), serviceTime);
     // std::cout << simulator->now() << ',' << 's' << ',' << job.id << ',' << status << ',' << queue.size() << '\n';
 }
