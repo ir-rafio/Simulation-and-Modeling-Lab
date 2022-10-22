@@ -19,7 +19,7 @@ protected:
     
     /*State Variables*/
     bool status;
-    Queue<Job> queue, served;
+    Queue<Job> queue;
 
     /*Statistical Variables*/
     int arrivalCount, qMax;
@@ -41,7 +41,6 @@ public:
     double getMaxDelay();
     double getTotalDelay();
     double getUtilTime();
-    Queue<Job>* jobsDone();
     
     /*Event Handlers*/
     void arrivalHandler();

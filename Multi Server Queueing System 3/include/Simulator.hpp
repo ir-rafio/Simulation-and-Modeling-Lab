@@ -11,6 +11,7 @@ class Simulator
 protected:
     /*System*/
     Server* server[3];
+    friend class Server;
 
     /*Basic Members*/
     double clock;
@@ -25,6 +26,7 @@ public:
     void run();
     void schedule(Event*, double);
     void reset(double, double);
+    void moveBetweenLines();
     
     /*Getter Functions*/
     double now();

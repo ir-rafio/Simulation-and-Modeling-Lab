@@ -17,26 +17,25 @@ Server::Server(Simulator* s, double _arrivalMean, double _serviceMean): arrivalM
 
 int Server::getArrivalCount() { return arrivalCount; }
 int Server::getQMax() { return qMax; }
-int Server::getQSize() { return queue.size(); }
+int Server::getQSize() { return deque.size(); }
 double Server::getQArea() { return qArea; }
 double Server::getMaxDelay() { return maxDelay; }
 double Server::getTotalDelay() { return totalDelay; }
 double Server::getUtilTime() { return totalUtilization; }
-Queue<Job>* Server::jobsDone() { return &served; }
 
 void Server::arrivalHandler()
 {
     double now=simulator->now();
-    qArea+=queue.size()*(now-lastEventTime);
-    qMax=std::max(qMax, (int) queue.size());
-        // std::cout << queue.size() << ' ' << qMax << ' ' << qArea << '\n';
+    qArea+=deque.size()*(now-lastEventTime);
+    qMax=std::max(qMax, (int) deque.size());
+        // std::cout << deque.size() << ' ' << qMax << ' ' << qArea << '\n';
     lastEventTime=now;
     arrivalCount++;
     lastArrivalTime=now;
     
     Job job(arrivalCount);
     job.arrivalTime=now;
-    // std::cout << simulator->now() << ',' << 'a' << ',' << job.id << ',' << status << ',' << queue.size() << '\n';
+    // std::cout << simulator->now() << ',' << 'a' << ',' << job.id << ',' << status << ',' << deque.size() << '\n';
 
     if(status==0)
     {
@@ -44,7 +43,7 @@ void Server::arrivalHandler()
         lastUtilTime=now;
         serve(job);
     }
-    else queue.enqueue(job);
+    else deque.push_back(job);
 
     if(arrivalCount<100) simulator->schedule(new Arrival(simulator), RandomNumber::exponential(arrivalMean));
 }
@@ -52,24 +51,25 @@ void Server::arrivalHandler()
 void Server::departureHandler()
 {
     double now=simulator->now();
-    qArea+=queue.size()*(now-lastEventTime);
-    qMax=std::max(qMax, (int) queue.size());
-        // std::cout << queue.size() << ' ' << qMax << ' ' << qArea << '\n';
+    qArea+=deque.size()*(now-lastEventTime);
+    qMax=std::max(qMax, (int) deque.size());
+        // std::cout << deque.size() << ' ' << qMax << ' ' << qArea << '\n';
     lastEventTime=now;
     maxDelay=std::max(maxDelay, now-lastArrivalTime);
     totalDelay+=now-lastArrivalTime;
 
-    // std::cout << simulator->now() << ',' << 'd' << ',' << served.back().id << ',' << status << ',' << queue.size() << '\n';
+    // std::cout << simulator->now() << ',' << 'd' << ',' << served.back().id << ',' << status << ',' << deque.size() << '\n';
 
-    if(queue.isEmpty())
+    if(deque.empty())
     {
         status=0;
         totalUtilization+=now-lastUtilTime;
     }
     else
     {
-        Job job=queue.dequeue();
+        Job job=deque.front(); deque.pop_front();
         serve(job);
+        simulator->moveBetweenLines();
     }
 }
 
@@ -78,8 +78,7 @@ void Server::serve(Job job)
     double now=simulator->now(), serviceTime=RandomNumber::exponential(serviceMean);
     job.startOfServiceTime=now;
     job.departureTime=now+serviceTime;
-    served.enqueue(job);
 
     simulator->schedule(new Departure(this), serviceTime);
-    // std::cout << simulator->now() << ',' << 's' << ',' << job.id << ',' << status << ',' << queue.size() << '\n';
+    // std::cout << simulator->now() << ',' << 's' << ',' << job.id << ',' << status << ',' << deque.size() << '\n';
 }

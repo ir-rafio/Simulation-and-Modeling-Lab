@@ -17,12 +17,10 @@ Server::Server(Simulator* s, double _arrivalMean, double _serviceMean): arrivalM
 
 int Server::getArrivalCount() { return arrivalCount; }
 int Server::getQMax() { return qMax; }
-int Server::getQSize() { return queue.size(); }
 double Server::getQArea() { return qArea; }
 double Server::getMaxDelay() { return maxDelay; }
 double Server::getTotalDelay() { return totalDelay; }
 double Server::getUtilTime() { return totalUtilization; }
-Queue<Job>* Server::jobsDone() { return &served; }
 
 void Server::arrivalHandler()
 {
@@ -71,6 +69,8 @@ void Server::departureHandler()
         Job job=queue.dequeue();
         serve(job);
     }
+
+    simulator->moveBetweenLines();
 }
 
 void Server::serve(Job job)

@@ -2,7 +2,6 @@
 #define SERVER_HPP
 
 #include <bits/stdc++.h>
-#include "Queue.hpp"
 #include "Job.hpp"
 #include "RandomNumber.hpp"
 
@@ -13,13 +12,14 @@ class Server
 protected:
     /*Simulator*/
     Simulator *simulator;
+    friend class Simulator;
 
     /*Input Variables*/
     double arrivalMean, serviceMean;
     
     /*State Variables*/
     bool status;
-    Queue<Job> queue, served;
+    std::deque<Job> deque;
 
     /*Statistical Variables*/
     int arrivalCount, qMax;
@@ -41,7 +41,6 @@ public:
     double getMaxDelay();
     double getTotalDelay();
     double getUtilTime();
-    Queue<Job>* jobsDone();
     
     /*Event Handlers*/
     void arrivalHandler();

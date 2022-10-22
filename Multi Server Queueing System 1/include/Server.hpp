@@ -20,7 +20,6 @@ protected:
     /*State Variables*/
     bool status;
     Queue<Job>* queue;
-    Queue<Job> served;
 
     /*Statistical Variables*/
     double lastEventTime, lastArrivalTime, lastUtilTime, totalUtilization;
@@ -33,7 +32,6 @@ public:
     Server(Simulator*, double, double);
 
     /*Getter Functions*/
-    Queue<Job>* jobsDone();
     double getUtilTime();
     bool free();
     

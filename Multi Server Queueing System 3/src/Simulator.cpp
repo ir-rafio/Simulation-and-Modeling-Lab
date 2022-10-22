@@ -26,6 +26,23 @@ void Simulator::reset(double arrivalMean, double serviceMean)
     schedule(new Arrival(this), RandomNumber::exponential(arrivalMean));
 }
 
+void Simulator::moveBetweenLines()
+{
+    int i, j=0, k=0, temp;
+
+    for(i=0; i<3; i++)
+    {
+        if(server[i]->deque.size()<server[j]->deque.size()) j=i;
+        if(server[i]->deque.size()>server[k]->deque.size()) k=i;
+    }
+
+    if(server[k]->deque.size()>server[j]->deque.size())
+    {
+        Job job=server[k]->deque.back(); server[k]->deque.pop_back();
+        server[j]->deque.push_back(job);      
+    }
+}
+
 void Simulator::run()
 {
     Event *event;
