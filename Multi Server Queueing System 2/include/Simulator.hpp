@@ -16,6 +16,11 @@ protected:
     double clock;
     Heap<Event*> eventList;
 
+    /*System Variables*/
+    int qMax;
+    double qArea;
+    double lastEventTime;
+
 public:
     /*Constructor and Destructor*/
     Simulator(double, double);
@@ -36,6 +41,9 @@ public:
     int maxQLength();
     double avgQLength();
     double utilizationRatio();
+
+    /*Utility Functions*/
+    void updateQStat();
 };
 
 #endif

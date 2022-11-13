@@ -11,11 +11,15 @@ class Simulator
 protected:
     /*System*/
     Server* server[3];
-    friend class Server;
 
     /*Basic Members*/
     double clock;
     Heap<Event*> eventList;
+
+    /*System Variables*/
+    int qMax;
+    double qArea;
+    double lastEventTime;
 
 public:
     /*Constructor and Destructor*/
@@ -26,7 +30,6 @@ public:
     void run();
     void schedule(Event*, double);
     void reset(double, double);
-    void moveBetweenLines();
     
     /*Getter Functions*/
     double now();
@@ -38,6 +41,10 @@ public:
     int maxQLength();
     double avgQLength();
     double utilizationRatio();
+
+    /*Utility Functions*/
+    void updateQStat();
+    Server* longServer();
 };
 
 #endif

@@ -22,9 +22,8 @@ protected:
     Queue<Job> queue;
 
     /*Statistical Variables*/
-    int arrivalCount, qMax;
-    double qArea;
-    double lastEventTime, lastArrivalTime, lastUtilTime, maxDelay, totalDelay, totalUtilization;
+    int arrivalCount;
+    double lastArrivalTime, lastUtilTime, maxDelay, totalDelay, totalUtilization;
 
     /*Utility Functions*/
     void serve(Job);
@@ -35,9 +34,9 @@ public:
 
     /*Getter Functions*/
     int getArrivalCount();
-    int getQMax();
     int getQSize();
-    double getQArea();
+    // int getQMax();
+    // double getQArea();
     double getMaxDelay();
     double getTotalDelay();
     double getUtilTime();

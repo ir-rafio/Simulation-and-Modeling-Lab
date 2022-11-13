@@ -12,19 +12,17 @@ class Server
 protected:
     /*Simulator*/
     Simulator *simulator;
-    friend class Simulator;
 
     /*Input Variables*/
     double arrivalMean, serviceMean;
     
     /*State Variables*/
     bool status;
-    std::deque<Job> deque;
+    std::deque<Job> queue;
 
     /*Statistical Variables*/
-    int arrivalCount, qMax;
-    double qArea;
-    double lastEventTime, lastArrivalTime, lastUtilTime, maxDelay, totalDelay, totalUtilization;
+    int arrivalCount;
+    double lastArrivalTime, lastUtilTime, maxDelay, totalDelay, totalUtilization;
 
     /*Utility Functions*/
     void serve(Job);
@@ -35,9 +33,9 @@ public:
 
     /*Getter Functions*/
     int getArrivalCount();
-    int getQMax();
     int getQSize();
-    double getQArea();
+    // int getQMax();
+    // double getQArea();
     double getMaxDelay();
     double getTotalDelay();
     double getUtilTime();
@@ -45,6 +43,7 @@ public:
     /*Event Handlers*/
     void arrivalHandler();
     void departureHandler();
+    void moveBetweenLines();
 };
 
 #endif

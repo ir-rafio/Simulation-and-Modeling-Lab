@@ -23,24 +23,11 @@ void Simulator::reset(double arrivalMean, double serviceMean)
     for(i=0; i<3; i++) server[i]=new Server(this, arrivalMean, serviceMean);
     clock=0;
 
+    qMax=0;
+    qArea=0;
+    lastEventTime=0;
+
     schedule(new Arrival(this), RandomNumber::exponential(arrivalMean));
-}
-
-void Simulator::moveBetweenLines()
-{
-    int i, j=0, k=0, temp;
-
-    for(i=0; i<3; i++)
-    {
-        if(server[i]->deque.size()<server[j]->deque.size()) j=i;
-        if(server[i]->deque.size()>server[k]->deque.size()) k=i;
-    }
-
-    if(server[k]->deque.size()>server[j]->deque.size())
-    {
-        Job job=server[k]->deque.back(); server[k]->deque.pop_back();
-        server[j]->deque.push_back(job);      
-    }
 }
 
 void Simulator::run()
@@ -80,6 +67,32 @@ Server* Simulator::getServer()
     return server[j];
 }
 
+Server* Simulator::longServer()
+{
+    int i, j, m=-1, temp;
+
+    for(i=0; i<3; i++) 
+    {
+        temp=server[i]->getQSize();
+
+        if(temp>m)
+        {
+            j=i;
+            m=temp;
+        }
+    }
+
+    return server[j];
+}
+
+void Simulator::updateQStat()
+{
+    int totalQSize=server[0]->getQSize()+server[1]->getQSize()+server[2]->getQSize();
+    qArea+=totalQSize*(now()-lastEventTime);
+    qMax=std::max(qMax, totalQSize);
+    lastEventTime=now();
+}
+
 double Simulator::now() { return clock; }
 
 double Simulator::maxDelay()
@@ -97,12 +110,15 @@ int Simulator::maxQLength()
 {
     // std::cout << server[0]->getQMax() << ' ' << server[1]->getQMax() << ' ' << server[2]->getQMax() << '\n';
     // std::cout << '\t' << server[0]->getQArea() << ' ' << server[1]->getQArea() << ' ' << server[2]->getQArea() << '\n';
-    return std::max(server[0]->getQMax(), std::max(server[1]->getQMax(), server[2]->getQMax()));
+    
+    // return std::max(server[0]->getQMax(), std::max(server[1]->getQMax(), server[2]->getQMax()));
+    return qMax;
 }
 
 double Simulator::avgQLength()
 {
-    return (server[0]->getQArea()+server[1]->getQArea()+server[2]->getQArea())/(clock*3);
+    // return (server[0]->getQArea()+server[1]->getQArea()+server[2]->getQArea())/clock;
+    return qArea/clock;
 }
 
 double Simulator::utilizationRatio()

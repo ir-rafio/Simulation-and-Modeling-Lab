@@ -6,18 +6,14 @@ Server::Server(Simulator* s, double _arrivalMean, double _serviceMean): arrivalM
     status=0;
 
     arrivalCount=0;
-    qMax=0;
-    qArea=0;
     maxDelay=0;
     totalDelay=0;
     totalUtilization=0;
-    lastEventTime=0;
     lastArrivalTime=0;
 }
 
 int Server::getArrivalCount() { return arrivalCount; }
-int Server::getQMax() { return qMax; }
-double Server::getQArea() { return qArea; }
+int Server::getQSize() { return queue.size(); }
 double Server::getMaxDelay() { return maxDelay; }
 double Server::getTotalDelay() { return totalDelay; }
 double Server::getUtilTime() { return totalUtilization; }
@@ -25,12 +21,9 @@ double Server::getUtilTime() { return totalUtilization; }
 void Server::arrivalHandler()
 {
     double now=simulator->now();
-    qArea+=queue.size()*(now-lastEventTime);
-    qMax=std::max(qMax, (int) queue.size());
-        // std::cout << queue.size() << ' ' << qMax << ' ' << qArea << '\n';
-    lastEventTime=now;
     arrivalCount++;
     lastArrivalTime=now;
+    simulator->updateQStat();
     
     Job job(arrivalCount);
     job.arrivalTime=now;
@@ -50,12 +43,9 @@ void Server::arrivalHandler()
 void Server::departureHandler()
 {
     double now=simulator->now();
-    qArea+=queue.size()*(now-lastEventTime);
-    qMax=std::max(qMax, (int) queue.size());
-        // std::cout << queue.size() << ' ' << qMax << ' ' << qArea << '\n';
-    lastEventTime=now;
     maxDelay=std::max(maxDelay, now-lastArrivalTime);
     totalDelay+=now-lastArrivalTime;
+    simulator->updateQStat();
 
     // std::cout << simulator->now() << ',' << 'd' << ',' << served.back().id << ',' << status << ',' << queue.size() << '\n';
 
@@ -70,7 +60,7 @@ void Server::departureHandler()
         serve(job);
     }
 
-    simulator->moveBetweenLines();
+    // simulator->moveBetweenLines();
 }
 
 void Server::serve(Job job)
@@ -78,7 +68,7 @@ void Server::serve(Job job)
     double now=simulator->now(), serviceTime=RandomNumber::exponential(serviceMean);
     job.startOfServiceTime=now;
     job.departureTime=now+serviceTime;
-    served.enqueue(job);
+    // served.enqueue(job);
 
     simulator->schedule(new Departure(this), serviceTime);
     // std::cout << simulator->now() << ',' << 's' << ',' << job.id << ',' << status << ',' << queue.size() << '\n';
