@@ -19,10 +19,10 @@ protected:
     
     /*State Variables*/
     bool status;
-    Queue<Job>* queue;
+    Queue<Job>* queue, served;
 
     /*Statistical Variables*/
-    double lastEventTime, lastArrivalTime, lastUtilTime, totalUtilization;
+    double lastArrivalTime, lastUtilTime, totalUtilization;
 
     /*Utility Functions*/
     void serve(Job);

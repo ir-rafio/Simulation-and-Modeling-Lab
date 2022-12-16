@@ -93,13 +93,11 @@ int Simulator::maxQLength()
     // std::cout << server[0]->getQMax() << ' ' << server[1]->getQMax() << ' ' << server[2]->getQMax() << '\n';
     // std::cout << '\t' << server[0]->getQArea() << ' ' << server[1]->getQArea() << ' ' << server[2]->getQArea() << '\n';
     
-    // return std::max(server[0]->getQMax(), std::max(server[1]->getQMax(), server[2]->getQMax()));
     return qMax;
 }
 
 double Simulator::avgQLength()
 {
-    // return (server[0]->getQArea()+server[1]->getQArea()+server[2]->getQArea())/clock;
     return qArea/clock;
 }
 

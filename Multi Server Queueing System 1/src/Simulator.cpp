@@ -30,6 +30,21 @@ void Simulator::reset(double arrivalMean, double serviceMean)
     totalDelay=0;
 
     schedule(new Arrival(this), RandomNumber::exponential(arrivalMean));
+
+    // trace.close();
+    // for(i=0; ; i++)
+    // {
+    //     std::string fname=("trace"+std::to_string(i)+".csv");
+    //     std::ifstream f(fname.c_str());
+    //     if(f.good())
+    //     {
+    //         f.close();
+    //         continue;
+    //     }
+
+    //     trace.open(fname);
+    //     break;
+    // }
 }
 
 void Simulator::run()
@@ -58,6 +73,13 @@ Server* Simulator::getServer()
     for(i=0; i<3; i++) if(server[i]->free()) return server[i];
 
     return server[0];
+}
+
+void Simulator::updateQStat()
+{
+    qArea+=queue.size()*(now()-lastEventTime);
+    qMax=std::max(qMax, (int) queue.size());
+    lastEventTime=now();
 }
 
 double Simulator::now() { return clock; }

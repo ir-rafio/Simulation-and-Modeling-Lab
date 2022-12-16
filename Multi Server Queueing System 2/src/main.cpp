@@ -11,19 +11,21 @@ int main()
     Simulator s(arvMean, srvMean);
 
     std::ofstream res("result.csv");
-	res << "Arrival Mean" << ',' << "Service Mean" << ',' << "Traffic Intensity" << ',' << "Max Delay" << ',' << "Average Delay" << ',' << "Max Queue Length" << ',' << "Average Queue Length" << ',' << "Busy Ratio" << ',' << "Idle Ratio" << ',' << "Total Runtime" << '\n';
+    res << "Arrival Mean" << ',' << "Service Mean" << ',' << "Traffic Intensity" << ',' << "Max Delay" << ',' << "Average Delay" << ',' << "Max Queue Length" << ',' << "Average Queue Length" << ',' << "Busy Ratio" << ',' << "Idle Ratio" << ',' << "Total Runtime" << '\n';
 
-	for(i=1; i<n; i++)
-	{
-	    srvMean=arvMean*i*3/n;
-	    maxDelay=0;
+    n=3; m=30;
+    for(i=1; i<n; i++)
+    {
+        srvMean=arvMean*i*3/n;
+        srvMean=arvMean*3*(0.85+i*0.05);
+        maxDelay=0;
         avgDelay=0;
         maxQ=0;
         avgQ=0;
         util=0;
         runtime=0;
 
-	    for(j=0; j<m; j++)
+        for(j=0; j<m; j++)
         {
             s.reset(arvMean, srvMean);
             s.run();
@@ -34,11 +36,13 @@ int main()
             avgQ+=s.avgQLength();
             util+=s.utilizationRatio();
             runtime+=s.now();
+
+            std::cout << j+1 << ' ' << maxDelay << ' ' << avgDelay << "\t\t" << s.maxDelay() << ' ' << s.avgDelay() << std::endl;
         }
 
         res << arvMean << ',' << srvMean << ',' << srvMean/arvMean/3 << ',' << maxDelay/m << ',' << avgDelay/m << ',' << maxQ/m << ',' << avgQ/m << ',' << util/m << ',' << 1-util/m << ',' << runtime/m << '\n';
-	}
+    }
 
-    // getchar();
+    getchar();
     return 0;
 }

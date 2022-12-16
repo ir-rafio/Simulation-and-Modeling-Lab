@@ -13,9 +13,11 @@ int main()
     std::ofstream res("result.csv");
 	res << "Arrival Mean" << ',' << "Service Mean" << ',' << "Traffic Intensity" << ',' << "Max Delay" << ',' << "Average Delay" << ',' << "Max Queue Length" << ',' << "Average Queue Length" << ',' << "Busy Ratio" << ',' << "Idle Ratio" << ',' << "Total Runtime" << '\n';
 
-	for(i=1; i<n; i++)
+	// n=3; m=30;
+    for(i=1; i<n; i++)
 	{
 	    srvMean=arvMean*i*3/n;
+        // srvMean=arvMean*3*(0.85+i*0.05);
 	    maxDelay=0;
         avgDelay=0;
         maxQ=0;
@@ -34,6 +36,8 @@ int main()
             avgQ+=s.avgQLength();
             util+=s.utilizationRatio();
             runtime+=s.now();
+
+            // std::cout << j+1 << ' ' << maxDelay << ' ' << avgDelay << "\t\t" << s.getMaxDelay() << ' ' << s.avgDelay() << std::endl;
         }
 
         res << arvMean << ',' << srvMean << ',' << srvMean/arvMean/3 << ',' << maxDelay/m << ',' << avgDelay/m << ',' << maxQ/m << ',' << avgQ/m << ',' << util/m << ',' << 1-util/m << ',' << runtime/m << '\n';

@@ -59,8 +59,6 @@ void Server::departureHandler()
         Job job=queue.dequeue();
         serve(job);
     }
-
-    // simulator->moveBetweenLines();
 }
 
 void Server::serve(Job job)
