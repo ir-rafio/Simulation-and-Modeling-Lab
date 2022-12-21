@@ -8,6 +8,18 @@
 Terminal::Terminal(Simulator* s, std::string name_, double mean): simulator(s), name(name_), arrivalMean(mean)
 {}
 
+Terminal::~Terminal()
+{
+    Passenger *p;
+
+    while(!queue.empty())
+    {
+        p=queue.front();
+        delete p;
+        queue.pop();
+    }
+}
+
 void Terminal::setDestination(Terminal* t)
 {
     destination=t;
@@ -64,9 +76,6 @@ void Terminal::passengerArrivalHandler()
 
 void Terminal::CNGarrivalHandler(CNG* c)
 {
-    // std::cout << "\t\tID: " << c->getID() << '\n';
-    // std::cout << "\t\t" << name << '\n';
-    // std::cout << "\t\tSize: " << cng.size() << '\n';
     cng.push_back(c);
     
     while(boardCNG());

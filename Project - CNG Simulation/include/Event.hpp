@@ -14,7 +14,6 @@ protected:
     void setTime(double _time);
     
     virtual void handle()=0;
-    virtual void print();
 
 public:
     Event();
@@ -29,7 +28,6 @@ protected:
 public:
     Arrival(Terminal*);
     void handle();
-    void print();
 };
 
 class TripStart: public Event
@@ -39,7 +37,6 @@ protected:
 public:
     TripStart(CNG*);
     void handle();
-    void print();
 };
 
 class Departure: public Event
@@ -49,7 +46,6 @@ protected:
 public:
     Departure(CNG*);
     void handle();
-    void print();
 };
 
 #endif

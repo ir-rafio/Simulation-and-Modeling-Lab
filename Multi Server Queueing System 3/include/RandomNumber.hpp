@@ -9,6 +9,8 @@ public:
     static double uniform();
     static double uniform(double, double);
     static double exponential(double mean);
+private:
+    RandomNumber();
 };
 
 #endif

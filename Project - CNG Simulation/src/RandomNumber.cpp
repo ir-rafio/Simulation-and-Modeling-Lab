@@ -1,5 +1,7 @@
 #include "RandomNumber.hpp"
 
+const double PI=acos(-1.0);
+
 double RandomNumber::uniform()
 {
     int r=rand();
@@ -24,4 +26,14 @@ int RandomNumber::uniformInt(int l, int r)
 double RandomNumber::exponential(double mean)
 {
     return -mean*log(uniform());
+}
+
+double RandomNumber::normal()
+{
+    return sqrt(-2.0*log(uniform()))*cos(2*PI*uniform());
+}
+
+double RandomNumber::normal(double mu, double sigma)
+{
+    return mu+sigma*normal();
 }

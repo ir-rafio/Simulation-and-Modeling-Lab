@@ -14,13 +14,15 @@ protected:
     Terminal *terminal;
     std::vector<Passenger*> seat;
 
-    int perTripCost, perPassengerEarning, threshold;
+    int meanCost, perPassengerEarning, threshold;
     double tripDurationMean;
 
     int passengerCount, tripCount;
+    double totalCost;
 
 public:
-    CNG(Simulator*, Terminal*, double, int);
+    CNG(Terminal*, double, int);
+    ~CNG();
     
     bool free();
     void addPassenger(Passenger*);
@@ -29,7 +31,6 @@ public:
 
     int profit();
     double fuelEfficiency();
-    int getID();
 
     void write();
 };

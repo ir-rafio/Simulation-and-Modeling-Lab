@@ -25,12 +25,12 @@ void Simulator::reset(int id_)
     terminal[1]=new Terminal(this, "Station Road", 1.5);
     terminal[0]->setDestination(terminal[1]);
     terminal[1]->setDestination(terminal[0]);
-    for(i=0; i<20; i++) cng.push_back(new CNG(this, terminal[i/10], 1.25, 1+i%5));
+    for(i=0; i<10; i++) cng.push_back(new CNG(terminal[i/5], 1.27, 1+i%5));
 
     for(i=0; i<2; i++) schedule(new Arrival(terminal[i]), RandomNumber::exponential(terminal[i]->getArrivalMean()));
 
-    CNGstream.open("trace/cng/cng-day-"+std::to_string(id)+".csv");
-    passengerStream.open("trace/passenger/passenger-day-"+std::to_string(id)+".csv");
+    CNGstream.open("trace/cng-record-day-"+std::to_string(id)+".csv");
+    passengerStream.open("trace/passenger-record-day-"+std::to_string(id)+".csv");
 
     CNGstream << "ID" << ',' << "Policy" << ',' << "Passenger Count" << ',' << "Trip Count" << ',';
     CNGstream << "Profit" << ',' << "Fuel Efficiency" << '\n';
@@ -49,7 +49,6 @@ void Simulator::run()
     {
         event=eventList.pop();
         clock=event->time;
-        // event->print();
         event->handle();
         if(event) delete event;
     }

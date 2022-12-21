@@ -18,8 +18,6 @@ function clean{
     rm .\*.out
     rm .\*.csv
     rm .\trace\*.csv
-    rm .\trace\cng\*.csv
-    rm .\trace\passenger\*.csv
     echo "...........done............."
 }
 function cleanall{
@@ -30,8 +28,6 @@ function cleanall{
     rm .\*.out
     rm .\*.csv
     rm .\trace\*.csv
-    rm .\trace\cng\*.csv
-    rm .\trace\passenger\*.csv
     echo "...........done............."
 }
 

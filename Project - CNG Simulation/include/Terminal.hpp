@@ -18,7 +18,7 @@ protected:
 
 public:
     Terminal(Simulator*, std::string, double);
-
+    ~Terminal();
     void setDestination(Terminal*);
 
     Simulator* getSimulator();
